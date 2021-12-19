@@ -1,6 +1,5 @@
 import React from "react";
-import {useState} from "react";
-import {useEffect} from "react";
+import {useState, useEffect} from "react";
 import Card from "./Card.js";
 import api from "../utils/api";
 
@@ -41,6 +40,7 @@ function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick,}) {
         <section className="elements">
             {cards.map((card) => {
                 return (<Card
+                    key={card._id}
                     card={card}
                     onCardClick={onCardClick}
                 />);

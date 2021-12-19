@@ -13,7 +13,7 @@ function PopupEditAvatar({isOpen, onClose}) {
         <fieldset className="popup__form">
             <input
                 id="popupLinkPhotoAvatar"
-                autocomplete="off"
+                autoComplete="off"
                 type="url"
                 name="link"
                 placeholder="Ссылка на фото профиля"
