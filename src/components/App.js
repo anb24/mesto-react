@@ -18,6 +18,7 @@ function App() {
     const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
     const [selectedCard, setSelectedCard] = useState({});
     const [currentUser, setCurrentUser] = useState({});
+    const [cards, setCards] = useState([]);
 
     useEffect(() => {
         api
@@ -29,6 +30,39 @@ function App() {
                 console.log(err);
             });
     }, []);
+    useEffect(() => {
+        api
+            .getCards()
+            .then((cards) => {
+                setCards(cards);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, []);
+
+    function handleCardLike(card) {
+        const isLiked = card.likes.some((i) => i._id === currentUser._id);
+        api
+            .changeCardLike(card._id, isLiked)
+            .then((newCardSomeLike) => {
+                setCards((state) => state.map((c) => (c._id === card._id ? newCardSomeLike : c)));
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
+    function handleCardDelete(card) {
+        api
+            .deleteCard(card._id)
+            .then(() => {
+                setCards((state) => state.filter((c) => c._id !== card._id));
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 
     function handleEditAvatarClick() {
         setEditAvatarPopupOpen(true);
@@ -56,10 +90,13 @@ function App() {
                 <div className="page__container">
                     <Header/>
                     <Main
+                        cards={cards}
                         onEditProfile={handleEditProfileClick}
                         onAddPlace={handleAddCardClick}
                         onEditAvatar={handleEditAvatarClick}
                         onCardClick={handleCardClick}
+                        onCardLike={handleCardLike}
+                        onCardDelete={handleCardDelete}
                     />
                     <Footer/>
                     <PopupEditProfile
