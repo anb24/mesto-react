@@ -84,6 +84,18 @@ function App() {
         setSelectedCard({});
     }
 
+    function handleUpdateUser(data) {
+        api
+            .setUser(data)
+            .then((currentUserData) => {
+                setCurrentUser(currentUserData);
+                closeAllPopups();
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
     return (
         <userContext.Provider value={currentUser}>
             <div className="page">
@@ -102,6 +114,7 @@ function App() {
                     <PopupEditProfile
                         isOpen={isEditProfilePopupOpen}
                         onClose={closeAllPopups}
+                        onUpdateUser={handleUpdateUser}
                     />
                     <PopupAddCard
                         isOpen={isAddPlacePopupOpen}
