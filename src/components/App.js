@@ -5,12 +5,13 @@ import api from "../utils/api";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import ImagePopup from "./ImagePopup";
+import PopupImage from "./PopupImage";
 import PopupAddCard from "./PopupAddCard";
 import PopupEditAvatar from "./PopupEditAvatar";
 import PopupEditProfile from "./PopupEditProfile";
-//import PopupDeleteCard from "./PopupDeleteCard";
+import PopupWithForm from "./PopupWithForm"
 import {userContext} from "../contexts/CurrentUserContext.js";
+import {Spinner} from "./Spinner.js"
 
 function App() {
     const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
@@ -19,6 +20,7 @@ function App() {
     const [selectedCard, setSelectedCard] = useState({});
     const [currentUser, setCurrentUser] = useState({});
     const [cards, setCards] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         api
@@ -31,10 +33,12 @@ function App() {
             });
     }, []);
     useEffect(() => {
+        setIsLoading(true);
         api
             .getCards()
             .then((cards) => {
                 setCards(cards);
+                setIsLoading(false);
             })
             .catch((err) => {
                 console.log(err);
@@ -120,7 +124,7 @@ function App() {
             });
     }
 
-    return (
+    return isLoading ? (<Spinner/>) : (
         <userContext.Provider value={currentUser}>
             <div className="page">
                 <div className="page__container">
@@ -150,9 +154,14 @@ function App() {
                         onClose={closeAllPopups}
                         onUpdateAvatar={handleUpdateAvatar}
                     />
-                    <ImagePopup
+                    <PopupImage
                         card={selectedCard}
                         onClose={closeAllPopups}
+                    />
+                    <PopupWithForm
+                        title="Вы уверены?"
+                        name="card-delete"
+                        buttonTitle="Да"
                     />
                 </div>
             </div>
