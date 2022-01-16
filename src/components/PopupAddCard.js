@@ -1,12 +1,29 @@
 import React from "react";
 import PopupWithForm from "./PopupWithForm"
 
-function PopupAddCard({isOpen, onClose}) {
+function PopupAddCard({isOpen, onClose, onAddPlace}) {
+    const [name, setName] = React.useState("");
+    const [link, setLink] = React.useState("");
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        onAddPlace({name, link}, () => {
+            setName("");
+            setLink("");
+        });
+    }
+    function handleChangeName(evt) {
+        setName(evt.target.value);
+    }
+    function handleChangeLink(evt) {
+        setLink(evt.target.value);
+    }
 
     return (<PopupWithForm
         title="Новое место"
         name="card"
         buttonTitle="Создать"
+        onSubmit={handleSubmit}
         isOpen={isOpen}
         onClose={onClose}
     >
@@ -20,6 +37,8 @@ function PopupAddCard({isOpen, onClose}) {
                 minLength="2"
                 maxLength="30"
                 required
+                onChange={handleChangeName}
+                value={name}
             />
             <span id="popupNamePhoto-error" className="popup__error"/>
             <input
@@ -29,6 +48,8 @@ function PopupAddCard({isOpen, onClose}) {
                 placeholder="Ссылка на картинку"
                 className="popup__text popup__text_type_comment"
                 required
+                onChange={handleChangeLink}
+                value={link}
             />
             <span id="popupLinkPhoto-error" className="popup__error"/>
         </fieldset>

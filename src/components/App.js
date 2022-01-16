@@ -108,6 +108,18 @@ function App() {
             });
     }
 
+    function handleAddPlaceSubmit(data) {
+        api
+            .setNewCard(data)
+            .then((newCard) => {
+                setCards([newCard, ...cards]);
+                closeAllPopups();
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
     return (
         <userContext.Provider value={currentUser}>
             <div className="page">
@@ -131,6 +143,7 @@ function App() {
                     <PopupAddCard
                         isOpen={isAddPlacePopupOpen}
                         onClose={closeAllPopups}
+                        onAddPlace={handleAddPlaceSubmit}
                     />
                     <PopupEditAvatar
                         isOpen={isEditAvatarPopupOpen}

@@ -1,5 +1,5 @@
 function PopupWithForm({
-                           name, title, children, isOpen, onClose, onSubmit
+                           name, title, children, isOpen, onClose, buttonTitle, onSubmit
                        }) {
     return (<div
         className={`popup popup_type_${name} ${isOpen ? "popup_opened" : ""}`}
@@ -23,6 +23,7 @@ function PopupWithForm({
                     type="submit"
                     aria-label="Сохранить"
                 >
+                    {buttonTitle}
                 </button>
             </form>
         </div>
